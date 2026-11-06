@@ -1,95 +1,72 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import Script from "next/script";
+import { isProduction, siteConfig } from "@/config/site";
+import { Analytics } from "@/components/analytics/Analytics";
+import { CONSENT_HIDE_SCRIPT } from "@/config/analytics";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { StickyWhatsApp } from "@/components/layout/StickyWhatsApp";
+import { MotionProvider } from "@/components/motion/MotionProvider";
+import { ScrollEdge } from "@/components/motion/ScrollEdge";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { siteGraph } from "@/lib/seo";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
-});
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
+const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "InsideEdge | Full-Service Creative Agency",
-  description:
-    "InsideEdge is a full-service creative agency offering social media management, graphic design, web development, app development, and professional video editing for modern brands.",
-  keywords: [
-    "social media management",
-    "graphic design agency",
-    "web development",
-    "app development",
-    "video editing",
-    "short form content",
-    "reels editing",
-    "digital agency",
-    "brand content",
-  ],
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: "InsideEdge — Creative & Performance Marketing Agency in Guwahati",
+    template: "%s | InsideEdge",
+  },
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "InsideEdge | Full-Service Creative Agency",
-    description:
-      "Social Media · Graphic Design · Web Dev · App Dev · Video Editing",
     type: "website",
-    url: "https://insideedge.info/",
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    url: siteConfig.url,
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "InsideEdge | Full-Service Creative Agency",
-    description:
-      "Social Media · Graphic Design · Web Dev · App Dev · Video Editing",
-  },
+  twitter: { card: "summary_large_image" },
+  robots: isProduction ? { index: true, follow: true } : { index: false, follow: false },
+  formatDetection: { telephone: false },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const viewport: Viewport = {
+  themeColor: "#fafaf7",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${outfit.variable} h-full antialiased`}
-    >
+    <html lang="en-IN" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
       <head>
-        {/* Meta Pixel Code */}
-        <Script id="facebook-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-
-            fbq('init', '966296406185417');
-            fbq('track', 'PageView');
-          `}
-        </Script>
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_HIDE_SCRIPT }} />
       </head>
-
-      <body suppressHydrationWarning className="flex min-h-full flex-col">
-        <Navbar />
-
-        <main className="flex-1">{children}</main>
-
-        <Footer />
-
-        {/* Noscript fallback */}
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html:
-              '<img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=966296406185417&ev=PageView&noscript=1" />',
-          }}
-        />
+      <body>
+        <a
+          href="#main"
+          className="fixed top-3 left-3 z-(--z-skip) -translate-y-24 rounded-full bg-ink px-5 py-3 font-semibold text-paper transition-transform focus:translate-y-0"
+        >
+          Skip to content
+        </a>
+        <MotionProvider>
+          <SmoothScroll />
+          <ScrollEdge />
+          <Header />
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
+          <Footer />
+          <StickyWhatsApp />
+        </MotionProvider>
+        <Analytics />
+        <JsonLd data={siteGraph()} />
       </body>
     </html>
   );

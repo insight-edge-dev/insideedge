@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InsideEdge — www.insideedge.in.net
 
-## Getting Started
+Production website for InsideEdge, a creative and performance marketing agency in Guwahati, Assam.
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · Lenis · Zod.
 
-First, run the development server:
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local        # fill in what you have; everything is optional in dev
+npm run dev                       # http://localhost:3000
+npm run lint                      # ESLint
+npm run typecheck                 # route typegen + tsc
+npm run build                     # production build
+PW_CHANNEL=chrome npm run test:e2e  # Playwright against the production build (run build first)
+npm run check                     # all of the above
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+In development, leads without a delivery channel configured are logged to the terminal, and draft content is visible.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── config/        site.ts (NAP, links, env) · analytics.ts (tracking IDs)
+├── data/          services · clients · case-studies · insights · people · company   ← edit content here
+├── app/           routes (one folder per URL), sitemap, robots, OG images, /api/lead
+├── components/
+│   ├── layout/    Header, MobileMenu, Footer, StickyWhatsApp, Logo
+│   ├── home/      Hero, HeroFrame, ClientMarquee, Statement, ServicesIndex, Process
+│   ├── sections/  PageHero, FinalCta, SectorIndex, ProjectCard, ArticleCard, WhyUs, ResultsBand, Testimonials
+│   ├── ui/        Button/ArrowLink, Section, Faq, Breadcrumbs, Highlight, BookingLink, VideoPlayer, icons
+│   ├── motion/    SmoothScroll (Lenis), MotionProvider, Reveal/RevealText/EdgeLine, Magnetic, ScrollEdge
+│   ├── forms/     LeadForm
+│   ├── analytics/ Analytics, ConsentManager, AnalyticsListener
+│   └── seo/       JsonLd
+└── lib/           seo (metadata + schema) · analytics (track) · attribution (UTMs) · lead/* (schema, delivery, rate limit) · og
+```
 
-## Learn More
+## Content rules
 
-To learn more about Next.js, take a look at the following resources:
+- **Never publish unverified proof.** Stats, testimonials and case-study results need a named source. Components that depend on proof (`ResultsBand`, `Testimonials`, team) render nothing when their data is empty.
+- Case studies and articles have `status: "draft" | "published"`. Drafts are visible only in dev or with `NEXT_PUBLIC_SHOW_DRAFTS=true`, and are excluded from the sitemap.
+- Contact details exist only in `src/config/site.ts`.
+- Outstanding content: see **[CONTENT_REQUIRED.md](CONTENT_REQUIRED.md)**. Audit mapping: **[REDESIGN_AUDIT_CHECKLIST.md](REDESIGN_AUDIT_CHECKLIST.md)**. Deploy and domains: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design system
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tokens live in `src/app/globals.css` (`@theme`): `ink` #0a0a0a · `paper` #fafaf7 · `edge` #f0bf25 (sampled from the logo), display type scale (`text-display-*`), spacing (`py-section`), `rounded-card`, easing `ease-edge`, z-index scale.
 
-## Deploy on Vercel
+The signature motif is the **edge**: a yellow line or bar that draws in from the left. It appears as the scroll-progress rail, heading underlines, word highlights, card hover rules and the page-transition sweep. The hero "E" frame echoes the logo's inward arrow.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Motion principles: transforms and opacity only; the hero reveal is pure CSS so it never waits for hydration; everything respects `prefers-reduced-motion`; Lenis is off for touch and reduced motion.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tracking
+
+`track(event, params)` in `src/lib/analytics.ts` pushes to GTM (or gtag) and mirrors key actions to the Meta Pixel. WhatsApp, phone, email and booking clicks are captured site-wide by one delegated listener; mark a placement with `data-track-location="…"` on any ancestor.

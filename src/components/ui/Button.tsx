@@ -1,51 +1,87 @@
-import * as React from "react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost" | "secondary";
-  size?: "default" | "sm" | "lg";
-}
+type Variant = "primary" | "ink" | "outline" | "outline-light" | "paper";
+type Size = "md" | "lg";
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+const base =
+  "group/btn relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full font-semibold tracking-tight whitespace-nowrap transition-[color,background-color,border-color,transform] duration-(--duration-base) ease-edge active:scale-[0.98] select-none";
+
+const variants: Record<Variant, string> = {
+  primary: "bg-edge text-ink hover:bg-ink hover:text-paper",
+  ink: "bg-ink text-paper hover:bg-edge hover:text-ink",
+  paper: "bg-paper text-ink hover:bg-edge",
+  outline: "border border-ink/80 text-ink hover:bg-ink hover:text-paper",
+  "outline-light": "border border-paper/40 text-paper hover:border-edge hover:bg-edge hover:text-ink",
+};
+
+const sizes: Record<Size, string> = {
+  md: "h-11 px-5 text-sm",
+  lg: "h-14 px-7 text-base",
+};
+
+type Props = {
+  href: string;
+  children: React.ReactNode;
+  variant?: Variant;
+  size?: Size;
+  className?: string;
+  icon?: React.ReactNode | false;
+  /** Opens in a new tab (external links such as WhatsApp). */
+  external?: boolean;
+  "data-track"?: string;
+  "aria-label"?: string;
+};
+
+export function ButtonLink({ href, children, variant = "primary", size = "md", className, icon, external, ...rest }: Props) {
+  const content = (
+    <>
+      <span className="relative">{children}</span>
+      {icon !== false && (
+        <span aria-hidden className="relative inline-flex h-4 w-4 overflow-hidden">
+          {icon ?? (
+            <>
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-(--duration-base) ease-edge group-hover/btn:translate-x-full group-hover/btn:-translate-y-full" />
+              <ArrowUpRight className="absolute inset-0 h-4 w-4 -translate-x-full translate-y-full transition-transform duration-(--duration-base) ease-edge group-hover/btn:translate-x-0 group-hover/btn:translate-y-0" />
+            </>
+          )}
+        </span>
+      )}
+    </>
+  );
+  const cls = cn(base, variants[variant], sizes[size], className);
+
+  if (external || /^(https?:|mailto:|tel:)/.test(href)) {
     return (
-      <button
-        ref={ref}
-        className={cn(
-          // Base
-          "inline-flex items-center justify-center whitespace-nowrap font-semibold tracking-tight",
-          "transition-all duration-200 ease-out",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F0BF26] focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-          "disabled:pointer-events-none disabled:opacity-40 select-none",
-          {
-            // ── Primary: gold bg + navy text ──────────────────
-            "bg-[#F0BF26] text-[#011226] shadow-[0_2px_8px_rgba(240,191,38,0.3)] hover:bg-[#e6b420] hover:shadow-[0_4px_16px_rgba(240,191,38,0.4)] hover:-translate-y-px active:scale-[0.98] active:brightness-95":
-              variant === "default",
-
-            // ── Outline: white bg + navy border + navy text ───
-            "border border-[#E2E8F0] bg-white text-[#011226] shadow-[0_1px_3px_rgba(1,18,38,0.06)] hover:border-[#F0BF26] hover:text-[#011226] hover:shadow-[0_2px_8px_rgba(240,191,38,0.2)] hover:-translate-y-px active:scale-[0.98]":
-              variant === "outline",
-
-            // ── Ghost: transparent + navy text, gold on hover ─
-            "text-[#64748B] hover:text-[#011226] hover:bg-[rgba(1,18,38,0.05)] active:scale-[0.98]":
-              variant === "ghost",
-
-            // ── Secondary: navy bg + white text ──────────────
-            "bg-[#011226] text-white hover:bg-[#0a2240] hover:shadow-[0_4px_12px_rgba(1,18,38,0.25)] hover:-translate-y-px active:scale-[0.98]":
-              variant === "secondary",
-
-            // ── Sizes ─────────────────────────────────────────
-            "h-10 px-5 rounded-[10px] text-sm": size === "default",
-            "h-8 px-3.5 rounded-[8px] text-xs":   size === "sm",
-            "h-13 px-8 rounded-[12px] text-base":  size === "lg",
-          },
-          className
-        )}
-        {...props}
-      />
+      <a href={href} className={cls} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} {...rest}>
+        {content}
+      </a>
     );
   }
-);
-Button.displayName = "Button";
+  return (
+    <Link href={href} className={cls} {...rest}>
+      {content}
+    </Link>
+  );
+}
 
-export { Button };
+/** Text link with the arrow + underline micro-interaction. */
+export function ArrowLink({ href, children, className, external }: { href: string; children: React.ReactNode; className?: string; external?: boolean }) {
+  const cls = cn("group/al inline-flex items-center gap-1.5 font-semibold", className);
+  const inner = (
+    <>
+      <span className="link-underline">{children}</span>
+      <ArrowUpRight aria-hidden className="h-4 w-4 transition-transform duration-(--duration-base) group-hover/al:translate-x-0.5 group-hover/al:-translate-y-0.5" />
+    </>
+  );
+  return external ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {inner}
+    </a>
+  ) : (
+    <Link href={href} className={cls}>
+      {inner}
+    </Link>
+  );
+}
