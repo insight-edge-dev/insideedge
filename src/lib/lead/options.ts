@@ -10,6 +10,20 @@ export const budgetOptions = [
 
 export const timelineOptions = ["As soon as possible", "Within a month", "In 1–3 months", "Just exploring"] as const;
 
+export const serviceInterestOptions = [
+  "Complete Brand Creation & Launch",
+  "Manufacturer Discovery & Sourcing Coordination",
+  "Brand Strategy & Identity",
+  "Packaging & Label Design",
+  "Website & E-commerce Development",
+  "Social Media Marketing",
+  "Performance Marketing",
+  "SEO",
+  "Influencer Marketing",
+  "Creative Production",
+  "Other / Not Sure Yet",
+] as const;
+
 export const leadSources = ["contact", "free-audit", "service", "links"] as const;
 
 export type LeadSource = (typeof leadSources)[number];

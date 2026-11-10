@@ -1,84 +1,83 @@
-# Deployment and domain migration
+# Production Deployment
 
 ## 1. Vercel project
 
-1. Import the GitHub repo in Vercel (framework: Next.js, defaults are fine).
-2. **Environment variables** (Settings → Environment Variables): copy the keys from `.env.example`.
-   - Production **must** have a lead delivery channel (`RESEND_API_KEY` + `LEAD_TO_EMAIL`, or the `EMAILJS_*` set). Without one, the form shows a WhatsApp fallback message.
-   - Leave `NEXT_PUBLIC_SITE_ENV` unset. Vercel's `VERCEL_ENV` makes previews `noindex` automatically.
-3. Deploy. Previews get `X-Robots-Tag: noindex` and a disallow-all `robots.txt`.
+1. Import the GitHub repository in Vercel and keep the detected Next.js settings.
+2. Add the required variables from `.env.example` under **Settings → Environment Variables**.
+3. Keep `NEXT_PUBLIC_SITE_ENV` unset on Vercel. `VERCEL_ENV` is used so Preview deployments remain `noindex`.
+4. Deploy, then complete the controlled production checks below.
 
-Local check before every release:
+Do not commit `.env` or copy secret values into tickets, screenshots or documentation. `NEXT_PUBLIC_*` values are bundled into browser code; Resend and other secret keys must not use that prefix.
 
-```bash
+## 2. Lead delivery with Resend
+
+Resend is the selected production channel. The API intentionally requires all three values and has no public test-sender fallback:
+
+```env
+RESEND_API_KEY=replace_me
+LEAD_TO_EMAIL=insideedgellp@gmail.com
+LEAD_FROM_EMAIL=InsideEdge Website <leads@insideedge.in.net>
+```
+
+Setup:
+
+1. Add `insideedge.in.net` in Resend.
+2. Add the exact DNS verification records supplied by Resend. Do not invent or reuse records from another account.
+3. Wait for Resend to show the domain as verified.
+4. Create an API key restricted appropriately for sending and add it to Vercel Production.
+5. Add the approved sender and recipient values to Vercel Production.
+6. Deploy and submit one controlled enquiry. Confirm receipt at `insideedgellp@gmail.com`, correct reply-to behaviour and reasonable spam placement.
+
+Preview environments should use a dedicated test recipient/key or have delivery variables omitted. Never run automated tests against the real delivery endpoint; browser tests stub `/api/lead`.
+
+EmailJS and webhook support remain optional compatibility channels. Do not configure them unless intentionally required.
+
+## 3. Primary domain
+
+In Vercel **Settings → Domains**:
+
+1. Add `www.insideedge.in.net` and make it primary.
+2. Add `insideedge.in.net` and redirect it to `www.insideedge.in.net` with a permanent redirect.
+3. Add the exact DNS records Vercel displays for the project; provider-specific values may change.
+4. Confirm both HTTP and apex requests end at `https://www.insideedge.in.net`.
+
+The app also contains an apex-to-www redirect as a safety net. Canonicals and sitemap URLs use `https://www.insideedge.in.net`.
+
+No redirect from `insideedge.info` is configured. Do not connect or migrate that domain without proof of control and explicit owner approval.
+
+## 4. Production environment checklist
+
+- `NEXT_PUBLIC_SITE_URL=https://www.insideedge.in.net`
+- `NEXT_PUBLIC_CONTACT_EMAIL=insideedgellp@gmail.com`
+- Both approved phone/WhatsApp numbers and the confirmed Maps URL.
+- Resend variables from section 2.
+- Turnstile site and secret keys if bot protection is enabled.
+- GTM, Meta Pixel and Clarity IDs only for tools actually approved; consent controls must remain enabled.
+- Facebook and LinkedIn values omitted until official URLs are supplied.
+
+## 5. Release validation
+
+```powershell
 npm ci
 npm run lint
 npm run typecheck
 npm run build
-PW_CHANNEL=chrome npm run test:e2e   # omit PW_CHANNEL if Playwright's Chromium is installed
+npm run test:e2e
 ```
 
-## 2. Primary domain: `www.insideedge.in.net`
+Then inspect the deployed site at 1440, 1024, 768, 390 and 360 px. Confirm there is no horizontal overflow, clipped content or layout shift and verify navigation, forms, cookie controls, phone, WhatsApp, email and Maps links.
 
-In Vercel → Settings → Domains:
+## 6. Search and business listings
 
-1. Add `www.insideedge.in.net` (primary).
-2. Add `insideedge.in.net` and set it to **Redirect to `www.insideedge.in.net` (308)**.
-3. At the DNS provider: `www` → CNAME `cname.vercel-dns.com`; apex → A `76.76.21.21` (or as Vercel instructs).
-4. HTTPS is automatic. HTTP→HTTPS is enforced by Vercel, and HSTS is sent by `next.config.ts`.
-
-`next.config.ts` also contains an apex→www redirect as a safety net.
-
-## 3. Legacy domain: `insideedge.info` → primary
-
-**Goal:** one website. Every .info URL permanently redirects to the matching in.net URL.
-
-**Option A (preferred):** add `insideedge.info` and `www.insideedge.info` to *this* Vercel project. The host-based redirects in `next.config.ts` then apply:
-
-| From | To |
-|---|---|
-| `insideedge.info/blog/<slug>` | `www.insideedge.in.net/insights/<slug>` |
-| `insideedge.info/privacy-policy` | `www.insideedge.in.net/privacy-policy` |
-| `insideedge.info/<anything>` | `www.insideedge.in.net/<anything>` (unknown paths show the branded 404 with navigation) |
-
-Before switching DNS, crawl insideedge.info (Screaming Frog or `site:insideedge.info`) and add explicit redirects in `next.config.ts` for any URL with no same-path equivalent. Don't send everything blindly to `/`.
-
-**Option B:** if .info must stay on Framer/another host, configure a path-preserving 301 at the registrar/host. Framer: unpublish the site, then use the domain provider's URL forwarding with "forward path" enabled.
-
-After migration, **take down the Framer site's content**. It currently lists a different phone number and links to Paco Innovations' social profiles.
-
-## 4. Google Search Console
-
-1. Add a **Domain property** for `insideedge.in.net` (DNS TXT verification).
+1. Create/verify a Google Search Console Domain property for `insideedge.in.net`.
 2. Submit `https://www.insideedge.in.net/sitemap.xml`.
-3. If a property exists for `insideedge.info`, verify it, then use **Settings → Change of address** to point it to `insideedge.in.net` after the 301s are live.
-4. URL Inspection → request indexing for `/`, `/services`, `/work`, `/free-audit` and each service page.
-5. Monitor Pages → "Page with redirect" (expected for .info) and "Duplicate without canonical" (should be none).
+3. Request indexing for `/`, `/services`, `/services/brand-creation-launch`, `/work`, `/about`, `/contact` and `/free-audit`.
+4. Keep the Google Business Profile name, address, phones, hours and website aligned with `src/config/site.ts`.
 
-## 5. Google Business Profile
+## 7. Analytics and security
 
-- Website: `https://www.insideedge.in.net/?utm_source=google&utm_medium=organic&utm_campaign=gbp`
-- Name, address and phone **exactly** as in `src/config/site.ts`
-- Add the Maps URL to `NEXT_PUBLIC_GOOGLE_MAPS_URL`
-- Ask real clients for reviews. Never add ratings to schema manually.
-
-## 6. Analytics
-
-- **GTM** (recommended): create a container, set `NEXT_PUBLIC_GTM_ID`. Inside GTM add the GA4 Configuration tag and custom-event triggers for: `whatsapp_click`, `phone_click`, `email_click`, `form_start`, `form_submit`, `form_error`, `booking_click`, `service_page_view`, `case_study_view`, `portfolio_filter`, `scroll_75`, `video_start`, `video_50`, `video_complete`.
-- Mark `form_submit` and `whatsapp_click` as **key events** in GA4.
-- Consent Mode v2 defaults are set before GTM loads. Keep GTM tags consent-aware.
-- **Meta Pixel** loads after marketing consent (ID `966296406185417` unless overridden). In Events Manager, create custom conversions for `Lead` (form) and `Contact` (WhatsApp/phone).
-- **Clarity**: set `NEXT_PUBLIC_CLARITY_ID`. It loads after analytics consent.
-- If you add GTM tags from new vendors, add their hosts to the CSP in `next.config.ts`.
-
-## 7. Email delivery
-
-**Resend:** verify `insideedge.in.net` in Resend (SPF/DKIM DNS records), then set `LEAD_FROM_EMAIL=InsideEdge Website <leads@insideedge.in.net>`.
-
-**EmailJS (existing account):** EmailJS → Account → Security → enable *"Allow EmailJS API for non-browser applications"*, generate a private key, and set the four `EMAILJS_*` vars. The template receives `name`, `email`, `phone`, `time` and a full `details` block.
-
-Rotate the old EmailJS public key, since it was exposed in client JS.
-
-## 8. Rate limiting note
-
-The built-in limiter is in-memory per server instance. On Vercel, enable Cloudflare Turnstile (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`) for stronger bot protection. Vercel Firewall rate-limit rules on `/api/lead` are a further option.
+- Use the existing consent-aware GTM/analytics integration; do not install duplicate tags.
+- Mark only genuinely configured lead/contact events as key events.
+- If a new vendor is added through GTM, review consent classification, the privacy notice and CSP hosts.
+- The built-in limiter is per server instance. Turnstile and platform firewall rules are recommended for stronger production abuse control.
+- Rotate any secret suspected of exposure and remove former-team access before launch.

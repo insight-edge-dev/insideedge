@@ -120,7 +120,7 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         <div className="container-site">
           <SectionLabel>Process</SectionLabel>
           <h2 className="mt-6 max-w-3xl text-display-lg">What happens after you hire us.</h2>
-          <ol className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+          <ol className={`mt-14 grid gap-10 sm:grid-cols-2 ${service.process.length === 6 ? "lg:grid-cols-6" : "lg:grid-cols-5"}`}>
             {service.process.map((step, i) => (
               <Reveal as="li" key={step.title} delay={i * 0.06} className="border-t-[3px] border-ink pt-6">
                 <span className="label tabular text-muted">{String(i + 1).padStart(2, "0")}</span>

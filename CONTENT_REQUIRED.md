@@ -16,7 +16,7 @@ Confirmed and added:
 |---|---|
 | Primary sales phone / WhatsApp | `+91 75770 12300` |
 | Alternate calls / WhatsApp | `+91 70860 47498` |
-| Official business email | `contact@insideedgellp.com` |
+| General enquiries / lead email | `insideedgellp@gmail.com` |
 | Office address | `Hno 84, Ground Floor, S Sarania Road, Lachit Nagar, Guwahati, Assam 781007, India` |
 | Registered legal name | `INSIDE EDGE` |
 | Founding year | `2018` |
@@ -36,13 +36,14 @@ Still needed:
 
 ## 3. Clients - red
 
-`src/data/clients.ts` holds the 28 organisations taken from the logo sheet that was already published on this site. For each one, confirm:
+`src/data/clients.ts` holds the approved public client roster. Jio has been removed. AFT Technotrade has not been added because no approved repository asset was found. For each remaining organisation, confirm:
 
-- [ ] We have permission to display the logo, especially national brands: Jio, Canon, Dabur, JICA, Dalmia, IIT Guwahati.
+- [ ] We have permission to display the logo, especially national brands such as Canon, Dabur, JICA, Dalmia and IIT Guwahati.
 - [ ] The sector label is correct.
 - [ ] What InsideEdge delivered.
 - [ ] Higher-resolution logo files, preferably SVG or 512 px PNG.
 - [ ] What "ADC" is, and its correct sector.
+- [ ] Supply an approved AFT Technotrade logo asset and permission if it should be added.
 
 The two creator portraits on the old sheet were not carried over. Supply names and permission if they should be shown.
 
@@ -99,7 +100,7 @@ Two draft articles exist (`src/data/insights.ts`). They need editorial review, a
 
 | Integration | Env var |
 |---|---|
-| Lead email via Resend or EmailJS | `RESEND_API_KEY` + `LEAD_TO_EMAIL` or `EMAILJS_*` |
+| Lead email via Resend | `RESEND_API_KEY` + `LEAD_TO_EMAIL` + verified `LEAD_FROM_EMAIL` |
 | Google Tag Manager / GA4 | `NEXT_PUBLIC_GTM_ID` / `NEXT_PUBLIC_GA_ID` |
 | Meta Pixel | `NEXT_PUBLIC_META_PIXEL_ID` |
 | Microsoft Clarity | `NEXT_PUBLIC_CLARITY_ID` |
@@ -108,4 +109,4 @@ Two draft articles exist (`src/data/insights.ts`). They need editorial review, a
 
 ## 13. Legal - red
 
-`/privacy-policy` and `/terms` are plain-language drafts written with the DPDP Act 2023 in mind. They must be reviewed by a qualified professional before launch.
+The live `/privacy-policy` and `/terms` remain short drafts. Comprehensive internal drafts and a review checklist are in `docs/`; they must be approved by the owner and qualified Indian counsel before replacing the live pages.

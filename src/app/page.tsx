@@ -28,7 +28,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "InsideEdge — Creative & Performance Marketing Agency in Guwahati",
   description:
-    "Creative that performs. InsideEdge is a Guwahati-based agency for social media, Meta & Google ads, branding, websites, video and SEO — for brands across Assam, North East India and beyond.",
+    "InsideEdge helps entrepreneurs create, launch and grow brands through sourcing coordination, strategy, packaging, websites, content and performance marketing in Guwahati and beyond.",
   path: "/",
 });
 
@@ -73,7 +73,7 @@ export default function Home() {
           <div className="mb-14 flex flex-wrap items-end justify-between gap-6 lg:mb-20">
             <div>
               <SectionLabel>What we do</SectionLabel>
-              <RevealText text="Seven capabilities. One team." className="mt-6 max-w-4xl text-display-lg" />
+              <RevealText text="Eight capabilities. One team." className="mt-6 max-w-4xl text-display-lg" />
             </div>
             <ArrowLink href="/services">All services</ArrowLink>
           </div>

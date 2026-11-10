@@ -10,9 +10,9 @@ import { SectionLabel } from "@/components/ui/Section";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Services — Social, Ads, Branding, Websites, Video & SEO",
+  title: "Services — Brand Creation, Sourcing, Packaging & Marketing",
   description:
-    "Creative and performance marketing services from InsideEdge, Guwahati: social media, Meta & Google ads, branding, websites, video production, SEO and influencer campaigns.",
+    "Brand creation and launch services in Guwahati: manufacturer discovery, sourcing coordination, strategy, packaging, websites, content, SEO and performance marketing.",
   path: "/services",
 });
 
@@ -22,12 +22,12 @@ export default function ServicesPage() {
     <>
       <PageHero
         label="Services"
-        title="One team. Every lever of growth."
+        title="From first idea to market-ready brand."
         breadcrumbs={[{ name: "Services", path: "/services" }]}
         intro={
           <p>
-            Strategy, creative and media under one roof. Pick a single service or combine them — they’re designed to
-            work together, because the ad is only as good as the creative, and the creative only matters if it sells.
+            InsideEdge connects manufacturer discovery, brand strategy, packaging, websites, social media and marketing
+            into one coordinated journey. Each engagement includes only the stages agreed in its proposal.
           </p>
         }
       />

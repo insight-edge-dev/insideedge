@@ -60,19 +60,6 @@ const nextConfig: NextConfig = {
         destination: "https://www.insideedge.in.net/:path*",
         permanent: true,
       },
-      // Legacy domain → primary domain, path-preserving (see docs/DOMAIN_MIGRATION.md).
-      {
-        source: "/blog/:slug",
-        has: [{ type: "host", value: "(www\\.)?insideedge\\.info" }],
-        destination: "https://www.insideedge.in.net/insights/:slug",
-        permanent: true,
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "(www\\.)?insideedge\\.info" }],
-        destination: "https://www.insideedge.in.net/:path*",
-        permanent: true,
-      },
       // Legacy paths on this domain.
       { source: "/blog", destination: "/insights", permanent: true },
       { source: "/blog/:slug", destination: "/insights/:slug", permanent: true },

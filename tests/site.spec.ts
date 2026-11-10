@@ -15,6 +15,8 @@ test("homepage renders positioning, CTAs and a single h1", async ({ page }) => {
   await expect(page.locator('a[href^="https://wa.me/"]').first()).toBeAttached();
   const html = await page.content();
   expect(html).not.toContain("insideedge.info");
+  expect(html).not.toMatch(/AI-generated concept\. Not client work\./i);
+  await expect(page.getByText("Brand Creation & Launch", { exact: true }).first()).toBeVisible();
 });
 
 test("navigation reaches the services index", async ({ page, isMobile }) => {
@@ -26,7 +28,17 @@ test("navigation reaches the services index", async ({ page, isMobile }) => {
     await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Services" }).click();
   }
   await expect(page).toHaveURL(/\/services$/);
-  await expect(page.locator("h1")).toContainText("One team");
+  await expect(page.locator("h1")).toContainText("market-ready brand");
+});
+
+test("brand launch service explains the six-stage scope", async ({ page }) => {
+  await page.goto("/services/brand-creation-launch");
+  await expect(page.locator("h1")).toContainText("first business idea");
+  for (const stage of ["Discover", "Source", "Create", "Build", "Launch", "Grow"]) {
+    await expect(page.locator("main h3").getByText(stage, { exact: true })).toBeVisible();
+  }
+  await page.locator("summary", { hasText: "Does InsideEdge manufacture products?" }).click();
+  await expect(page.getByText(/do not own factories or manufacture products directly/i)).toBeVisible();
 });
 
 test("service page renders with FAQ schema and contextual WhatsApp", async ({ page }) => {
@@ -48,6 +60,7 @@ test("unknown routes return the branded 404", async ({ page }) => {
 
 test("work page filters clients by industry", async ({ page }) => {
   await page.goto("/work");
+  await expect(page.getByText("Jio", { exact: true })).toHaveCount(0);
   const cards = page.locator("main ul li", { has: page.locator("img") });
   const all = await cards.count();
   await page.getByRole("button", { name: "Healthcare", exact: true }).click();
@@ -65,6 +78,7 @@ test("contact form blocks empty submission, then submits and redirects to thank-
   await page.route("**/api/lead", (route) => route.fulfill({ status: 200, json: { ok: true } }));
   await form.getByLabel(/Your name/).fill("Test Person");
   await form.getByLabel(/Phone \/ WhatsApp/).fill("+91 98765 43210");
+  await form.getByLabel(/What do you need/).selectOption("Complete Brand Creation & Launch");
   await form.getByRole("checkbox").check();
   await form.getByRole("button", { name: /Send project brief/ }).click();
   await expect(page).toHaveURL(/\/thank-you\?from=contact/);
@@ -96,6 +110,22 @@ test.describe("lead API", () => {
     });
     expect(res.status()).toBe(403);
   });
+
+  test("rejects excessively long input", async ({ request }) => {
+    const res = await request.post("/api/lead", {
+      headers: { "x-forwarded-for": "203.0.113.42" },
+      data: {
+        name: "Test Person",
+        phone: "9876543210",
+        message: "x".repeat(2001),
+        consent: true,
+        elapsed: 5000,
+      },
+    });
+    expect(res.status()).toBe(422);
+    const body = await res.json();
+    expect(body.fieldErrors.message).toBeTruthy();
+  });
 });
 
 test("robots and sitemap expose the canonical domain", async ({ request }) => {
@@ -103,6 +133,7 @@ test("robots and sitemap expose the canonical domain", async ({ request }) => {
   expect(robots).toContain("https://www.insideedge.in.net/sitemap.xml");
   const sitemap = await (await request.get("/sitemap.xml")).text();
   expect(sitemap).toContain("https://www.insideedge.in.net/services/performance-marketing");
+  expect(sitemap).toContain("https://www.insideedge.in.net/services/brand-creation-launch");
   expect(sitemap).not.toContain("/thank-you");
 });
 

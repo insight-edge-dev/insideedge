@@ -28,7 +28,7 @@ export const siteConfig = {
   foundingYear: "2018",
   tagline: "Creative that performs.",
   description:
-    "InsideEdge is a creative and performance marketing agency in Guwahati, Assam. We build brands, content, ads and websites for ambitious businesses across North East India and beyond.",
+    "InsideEdge is a creative and performance agency in Guwahati helping entrepreneurs create, launch and grow brands through sourcing coordination, strategy, identity, packaging, websites and marketing.",
 
   /** Canonical origin. No trailing slash. */
   url: env(process.env.NEXT_PUBLIC_SITE_URL, "https://www.insideedge.in.net").replace(/\/$/, ""),
@@ -57,7 +57,7 @@ export const siteConfig = {
     whatsapp: env(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER, primaryPhone.whatsapp),
     phoneE164: env(process.env.NEXT_PUBLIC_PRIMARY_PHONE_E164, primaryPhone.e164),
     phoneDisplay: env(process.env.NEXT_PUBLIC_PRIMARY_PHONE_DISPLAY, primaryPhone.display),
-    email: env(process.env.NEXT_PUBLIC_CONTACT_EMAIL, "contact@insideedgellp.com"),
+    email: env(process.env.NEXT_PUBLIC_CONTACT_EMAIL, "insideedgellp@gmail.com"),
     responseTime: "We reply to every enquiry within one working day.",
     officeHours: "Monday to Saturday, 10:00 AM to 7:00 PM",
   },

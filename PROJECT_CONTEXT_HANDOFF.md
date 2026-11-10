@@ -1,9 +1,9 @@
 # InsideEdge Website - Complete Project Context and Handoff
 
-**Status date:** 4 November 2026
+**Status date:** 8 November 2026
 **Project root:** `C:\Users\ABHISHEK KUMAR\Desktop\InsideEdge\ie`
 **Primary domain:** `https://www.insideedge.in.net`
-**Legacy domain:** `insideedge.info`
+**Unverified external domain:** `insideedge.info` — no redirect or migration is authorised
 **Business:** InsideEdge, a creative and performance marketing agency based in Guwahati, Assam
 
 ---
@@ -124,7 +124,7 @@ The closing thought is:
 | Founded | 2018 |
 | Primary phone and WhatsApp | `+91 75770 12300` |
 | Alternate phone and WhatsApp | `+91 70860 47498` |
-| Official email | `contact@insideedgellp.com` |
+| General enquiries / lead email | `insideedgellp@gmail.com` |
 | Address | Hno 84, Ground Floor, S Sarania Road, Lachit Nagar, Guwahati, Assam 781007, India |
 | Office hours | Monday to Saturday, 10:00 AM to 7:00 PM |
 | Google Maps/Business Profile | `https://share.google/MZp6fsnmTQe8S8YZw` |
@@ -233,7 +233,7 @@ Other important files:
 ### Redirect behavior
 
 - Apex `insideedge.in.net` redirects to `www.insideedge.in.net` when DNS points to this project.
-- `insideedge.info/*` is configured to redirect to the equivalent new-domain path.
+- No `insideedge.info` host redirect is configured; control and migration authority are unconfirmed.
 - Legacy `/blog/*` redirects to `/insights/*`.
 - Legacy `/portfolio/*` redirects to `/work/*`.
 - `/privacy`, `/contact-us`, `/about-us`, and `/audit` redirect to current routes.
@@ -393,12 +393,12 @@ The privacy policy and terms are implementation drafts, not legal approval. A qu
 
 #### 3. Client-logo permission decision
 
-The site currently contains 28 client logos taken from a previously published logo sheet. Management must either:
+The site currently contains 27 client logos taken from a previously published logo sheet. Management must either:
 
 - confirm permission and accuracy for each logo; or
 - remove/hide unconfirmed logos before launch.
 
-This is especially important for Jio, Canon, Dabur, JICA, Dalmia Cement and IIT Guwahati.
+This is especially important for Canon, Dabur, JICA, Dalmia Cement and IIT Guwahati. Jio has been removed from the public roster.
 
 Also confirm:
 
@@ -412,16 +412,14 @@ Also confirm:
 - Import the repository into Vercel.
 - Add `www.insideedge.in.net` as primary.
 - Redirect apex `insideedge.in.net` to `www`.
-- Point `insideedge.info` and `www.insideedge.info` to the project or configure path-preserving registrar redirects.
-- Crawl the legacy domain before switching DNS and add any missing explicit redirects.
-- Remove/unpublish the old legacy-site content after redirects are active.
+- Do not point or redirect `insideedge.info` unless ownership is proved and the owner expressly approves a migration plan.
 - Verify HTTPS and host redirects.
 
 #### 5. Search setup
 
 - Create/verify a Google Search Console domain property for `insideedge.in.net`.
 - Submit `https://www.insideedge.in.net/sitemap.xml`.
-- Use Change of Address for the legacy `.info` property after redirects are live.
+- Do not use Search Console Change of Address for `.info` without verified control and owner approval.
 - Update Google Business Profile with the canonical website and confirmed NAP.
 - Validate structured data after deployment.
 
@@ -515,7 +513,7 @@ NEXT_PUBLIC_PRIMARY_PHONE_DISPLAY="+91 75770 12300"
 NEXT_PUBLIC_SECONDARY_WHATSAPP_NUMBER=917086047498
 NEXT_PUBLIC_SECONDARY_PHONE_E164=+917086047498
 NEXT_PUBLIC_SECONDARY_PHONE_DISPLAY="+91 70860 47498"
-NEXT_PUBLIC_CONTACT_EMAIL=contact@insideedgellp.com
+NEXT_PUBLIC_CONTACT_EMAIL=insideedgellp@gmail.com
 NEXT_PUBLIC_GOOGLE_MAPS_URL=https://share.google/MZp6fsnmTQe8S8YZw
 NEXT_PUBLIC_SHOW_DRAFTS=false
 ```

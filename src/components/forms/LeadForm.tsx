@@ -4,8 +4,7 @@ import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, Loader2 } from "lucide-react";
-import { featuredServices } from "@/data/services";
-import { budgetOptions, timelineOptions, type LeadSource } from "@/lib/lead/options";
+import { budgetOptions, serviceInterestOptions, timelineOptions, type LeadSource } from "@/lib/lead/options";
 import { track } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { cn, whatsappUrl } from "@/lib/utils";
@@ -175,7 +174,7 @@ export function LeadForm({ source, variant = "full", defaultService, defaultMess
         <>
           {field("website", "Website or Instagram")}
           <div className="grid gap-7 sm:grid-cols-3">
-            {select("service", "What do you need?", [...featuredServices.map((s) => s.name), "Not sure yet"], defaultService)}
+            {select("service", "What do you need?", serviceInterestOptions, defaultService)}
             {select("budget", "Approx. budget", budgetOptions)}
             {select("timeline", "Timeline", timelineOptions)}
           </div>

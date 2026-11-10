@@ -14,6 +14,7 @@ export type Sector =
   | "Food & Beverage"
   | "Retail & E-commerce"
   | "Technology"
+  | "Unconfirmed"
   | "Travel & Hospitality"
   | "Wellness"
   | "Real Estate";
@@ -30,7 +31,6 @@ export type Client = {
 const logo = (slug: string) => `/clients/${slug}.webp`;
 
 export const clients: Client[] = [
-  { slug: "jio", name: "Jio", sector: "Technology" },
   { slug: "dabur", name: "Dabur", sector: "Consumer & FMCG" },
   { slug: "canon", name: "Canon", sector: "Technology" },
   { slug: "jica", name: "JICA", sector: "Non-profit & Development" },
@@ -57,7 +57,7 @@ export const clients: Client[] = [
   { slug: "shubh-kart", name: "Shubh Kart", sector: "Retail & E-commerce" },
   { slug: "travelidea", name: "Travelidea", sector: "Travel & Hospitality" },
   { slug: "qbohr", name: "QBohr", sector: "Technology" },
-  { slug: "adc", name: "ADC", sector: "Consumer & FMCG" },
+  { slug: "adc", name: "ADC", sector: "Unconfirmed" },
 ].map((c) => ({ ...c, logo: logo(c.slug) })) as Client[];
 
 export const sectors = Array.from(new Set(clients.map((c) => c.sector))).sort();

@@ -12,7 +12,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "About InsideEdge - Guwahati Creative & Performance Agency",
   description:
-    "InsideEdge is a creative and performance marketing agency based in Guwahati, Assam. Meet the studio, our principles and how we work with brands across North East India.",
+    "InsideEdge is a Guwahati creative and performance agency helping entrepreneurs create, launch and grow brands from concept and sourcing coordination to identity and marketing.",
   path: "/about",
 });
 
@@ -45,9 +45,8 @@ export default function AboutPage() {
         breadcrumbs={[{ name: "About", path: "/about" }]}
         intro={
           <p>
-            InsideEdge is a creative and performance marketing agency in Guwahati, Assam. We work with national brands,
-            public institutions and home-grown businesses - combining strategy, design, video, websites and advertising
-            in one team that answers for the result.
+            InsideEdge helps entrepreneurs and established businesses move from an initial idea toward a market-ready
+            brand, coordinating research and sourcing support with strategy, identity, packaging, websites and marketing.
           </p>
         }
       />
@@ -79,7 +78,8 @@ export default function AboutPage() {
             </p>
             <p>
               Since then, InsideEdge has grown from an idea into a multidisciplinary marketing and creative agency
-              working across strategy, branding, content, digital, campaigns and web experiences. Our capabilities have
+              working across concept development, sourcing coordination, strategy, branding, packaging, content,
+              digital, campaigns and web experiences. Our capabilities have
               expanded, but our way of working has not become complicated.
             </p>
             <p>

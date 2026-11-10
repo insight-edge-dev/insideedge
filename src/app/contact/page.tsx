@@ -12,7 +12,7 @@ import { brandLaunchInquiry } from "@/data/brand-launch";
 export const metadata: Metadata = pageMetadata({
   title: "Contact — Start a Project",
   description:
-    "Tell InsideEdge what you’re working on. Message us on WhatsApp, call, or send a project brief. Studio in Guwahati, Assam.",
+    "Tell InsideEdge about your business idea, brand launch or growth project. Discuss sourcing coordination, branding, packaging, websites and marketing.",
   path: "/contact",
 });
 
@@ -24,9 +24,9 @@ export default async function ContactPage({ searchParams }: {
     <>
       <PageHero
         label="Contact"
-        title="Tell us what you’re working on."
+        title="Bring us the idea. We’ll map the journey."
         breadcrumbs={[{ name: "Contact", path: "/contact" }]}
-        intro={<p>{siteConfig.contact.responseTime} Prefer to talk now? WhatsApp is the fastest way to reach us.</p>}
+        intro={<p>From first concept to launch and growth, tell us where you are and what support you need. {siteConfig.contact.responseTime}</p>}
       />
 
       <section className="bg-paper pb-section">

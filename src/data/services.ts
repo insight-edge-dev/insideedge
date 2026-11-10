@@ -31,8 +31,57 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "social-media-marketing",
+    slug: "brand-creation-launch",
     index: "01",
+    name: "Brand Creation & Launch",
+    short: "Brand Launch",
+    featured: true,
+    headline: "From your first business idea to a brand ready for market.",
+    summary: "Concept development, sourcing coordination, identity, packaging, digital build and launch support in one coordinated journey.",
+    intro:
+      "InsideEdge helps entrepreneurs move from an idea toward a market-ready brand. We coordinate research, manufacturer and supplier discovery, identity, packaging, websites and marketing around the stages agreed for your project.",
+    whoFor: [
+      "Entrepreneurs starting with a product or business idea",
+      "Businesses that need sourcing, brand and launch work coordinated together",
+      "Existing product businesses preparing a new category or market launch",
+    ],
+    problems: [
+      { title: "Too many disconnected vendors", body: "Research, sourcing, design, packaging and marketing move separately without one launch plan." },
+      { title: "A product without a position", body: "A supplier or product is selected before the audience, category and brand proposition are clear." },
+      { title: "Launch activity without foundations", body: "Campaigns begin before packaging, digital assets, tracking and customer journeys are ready." },
+    ],
+    deliverables: [
+      "Business concept, category, audience and competitor research",
+      "Manufacturer research, supplier identification and introduction coordination",
+      "Brand positioning, naming support, identity and guidelines",
+      "Packaging, label design and product presentation",
+      "Website or e-commerce development and social profile setup",
+      "Launch content, influencer, advertising and growth planning",
+    ],
+    process: [
+      { title: "Discover", body: "Clarify the concept, category, audience, competitors, positioning and launch strategy." },
+      { title: "Source", body: "Research possible manufacturers and suppliers, coordinate introductions and explore initial product and packaging feasibility." },
+      { title: "Create", body: "Develop naming support, identity, guidelines, packaging, labels, creative direction and product presentation." },
+      { title: "Build", body: "Create the website or e-commerce experience, digital assets, social profiles and conversion-focused landing pages." },
+      { title: "Launch", body: "Coordinate campaign strategy, content production, social launch, creators and performance advertising." },
+      { title: "Grow", body: "Support SEO, content, social management, optimisation, reporting and the next stage of brand growth." },
+    ],
+    faqs: [
+      { q: "Does every project include all six stages?", a: "No. The exact stages, deliverables, responsibilities, fees and timeline are defined in your proposal or agreement." },
+      { q: "Does InsideEdge manufacture products?", a: "No. We can research and introduce independent manufacturers or suppliers and coordinate agreed sourcing activity, but we do not own factories or manufacture products directly." },
+      { q: "Do you guarantee a supplier, product quality or regulatory approval?", a: "No. Supplier availability and performance, samples, quality, pricing, minimum orders, certifications and regulatory requirements need independent verification. We help coordinate the process within the agreed scope." },
+      { q: "Can you build the online store and market the launch?", a: "Yes. Depending on scope, we build with Shopify, WordPress or Next.js and can support content, SEO, influencer campaigns and performance advertising." },
+    ],
+    related: ["branding", "website-design-development", "social-media-marketing", "performance-marketing"],
+    seo: {
+      title: "Brand Creation & Launch Services in Guwahati",
+      description: "Move from business idea to market-ready brand with sourcing coordination, strategy, identity, packaging, e-commerce and launch marketing from InsideEdge.",
+    },
+    whatsapp: "Hi InsideEdge, I have a business or product idea and would like to discuss complete brand creation and launch support.",
+  },
+  {
+    slug: "social-media-marketing",
+    index: "02",
     name: "Social Media & Content",
     short: "Social Media",
     featured: true,
@@ -82,7 +131,7 @@ export const services: Service[] = [
   },
   {
     slug: "performance-marketing",
-    index: "02",
+    index: "03",
     name: "Performance Marketing",
     short: "Performance",
     featured: true,
@@ -132,7 +181,7 @@ export const services: Service[] = [
   },
   {
     slug: "meta-ads",
-    index: "02a",
+    index: "03a",
     name: "Meta Ads",
     short: "Meta Ads",
     featured: false,
@@ -180,7 +229,7 @@ export const services: Service[] = [
   },
   {
     slug: "google-ads",
-    index: "02b",
+    index: "03b",
     name: "Google Ads",
     short: "Google Ads",
     featured: false,
@@ -228,7 +277,7 @@ export const services: Service[] = [
   },
   {
     slug: "branding",
-    index: "03",
+    index: "04",
     name: "Branding & Identity",
     short: "Branding",
     featured: true,
@@ -275,7 +324,7 @@ export const services: Service[] = [
   },
   {
     slug: "website-design-development",
-    index: "04",
+    index: "05",
     name: "Websites & Digital Experiences",
     short: "Websites",
     featured: true,
@@ -323,7 +372,7 @@ export const services: Service[] = [
   },
   {
     slug: "video-production",
-    index: "05",
+    index: "06",
     name: "Video & Production",
     short: "Video",
     featured: true,
@@ -370,7 +419,7 @@ export const services: Service[] = [
   },
   {
     slug: "seo",
-    index: "06",
+    index: "07",
     name: "SEO & Search",
     short: "SEO",
     featured: true,
@@ -417,7 +466,7 @@ export const services: Service[] = [
   },
   {
     slug: "influencer-marketing",
-    index: "07",
+    index: "08",
     name: "Influencer & Campaigns",
     short: "Influencer",
     featured: true,
